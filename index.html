@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hangman</title>
+</head>
+<body>
+
+<span id="container"></span>
+
+<script type="text/javascript">
+  
+  //Array for game words
+  var words = ['kyle', 'alice', 'jeremy', 'david', 'chaz', 'tobais'];
+
+  //Picks a random number and selects that index from the words array
+  var gameWord = words[Math.floor(Math.random() * words.length)];
+  //checking the function above in the console
+  console.log('Get outta here cheater!! Game word: ' + gameWord);
+
+  //splits the selected word into a new array
+  var split = [];
+  split = gameWord.split('');
+  var wordLength = split.length;
+
+  //inserts each letter from the gameWord into individual spans in HTML
+  var htmlElements = '';
+  for (var i = 0; i < wordLength; i++) {
+    htmlElements += '<span id="letter' + i + '">_ </span>';
+  }
+  document.getElementById('container').innerHTML = htmlElements;
+
+
+  //listen for user input
+  document.onkeyup = function(event) {
+    var userGuess = event.key;  
+
+    //compares the player input against the gameWord array
+    for (var j = 0; j  < wordLength; j++) {
+  
+      //if there is a match, it replaces the HTML span with the capitalized letter pressed
+      if (userGuess === gameWord[j]){
+        spanInsert = 'letter' + j;
+        var fillLetter = userGuess.toUpperCase();
+        document.getElementById(spanInsert).innerHTML = fillLetter + ' ';
+      }
+    }
+  }
+
+
+
+
+//   console.log(words[1].length);
+
+//   var dashs = words[1].length;
+
+//   // for (var i = 0; i < dashs; i++) {
+//   //   document.write('_ ');
+//   // }
+
+
+
+// // if the user guess = charat print the user guess
+// // else print _ 
+
+// // for (var j = 0; j  < dashs; j++) {
+// //   //var res = str.charAt(0);
+// //   var check = words[1].charAt(j)
+  
+// //   if (userGuess === check) {
+// //     document.write(userGuess+ ' ');
+// //   }
+// //   else{
+// //     document.write('_ ');
+// //   }
+// // }
+
+
+</script>  
+
+</body>
+</html>
