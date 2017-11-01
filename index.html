@@ -5,74 +5,72 @@
 </head>
 <body>
 
-<span id="container"></span>
+<span id="wordBlanks"></span>
+<section id="gameScore">
+  <p>Guess Letters: <span id="guesses"></span></p>
+  <p>Moves Remaining: <span id="remain">10</span></p>
+
+</section>
 
 <script type="text/javascript">
   
   //Array for game words
   var words = ['kyle', 'alice', 'jeremy', 'david', 'chaz', 'tobais'];
+  var guessRemaining = 10;
+  var wins = 0;
+  var loses = 0;
 
   //Picks a random number and selects that index from the words array
   var gameWord = words[Math.floor(Math.random() * words.length)];
   //checking the function above in the console
   console.log('Get outta here cheater!! Game word: ' + gameWord);
 
-  //splits the selected word into a new array
+  //splits the selected gameWord into a new array of characters 
   var split = [];
   split = gameWord.split('');
   var wordLength = split.length;
 
-  //inserts each letter from the gameWord into individual spans in HTML
+  //inserts a blank line for each leter in the split
   var htmlElements = '';
   for (var i = 0; i < wordLength; i++) {
     htmlElements += '<span id="letter' + i + '">_ </span>';
   }
-  document.getElementById('container').innerHTML = htmlElements;
+  document.getElementById('wordBlanks').innerHTML = htmlElements;
 
+  //array to hold the user's guessed letters
+  var guessedLetters = [];
+
+  //checks if the letter is in the guessed letter array or gameWord array
+  //if not subtract a move from the score
+  function check(val){
+    if(guessedLetters.indexOf(val) === -1 && gameWord.indexOf(val) === -1){
+      guessedLetters.push(val);
+      guessRemaining--;
+    }
+  }
 
   //listen for user input
   document.onkeyup = function(event) {
-    var userGuess = event.key;  
+    var userGuess = event.key; 
 
-    //compares the player input against the gameWord array
+    //compares the player guess against the gameWord array
     for (var j = 0; j  < wordLength; j++) {
   
-      //if there is a match, it replaces the HTML span with the capitalized letter pressed
+      //if there is a match, it replaces the numbered HTML span with the capitalized guessed letter
       if (userGuess === gameWord[j]){
         spanInsert = 'letter' + j;
         var fillLetter = userGuess.toUpperCase();
         document.getElementById(spanInsert).innerHTML = fillLetter + ' ';
       }
+
+      //if it does not match gameWord, run the player guess against the check function
+      else{
+        check(userGuess);
+      }
     }
+    document.getElementById('guesses').innerHTML = guessedLetters;
+    document.getElementById('remain').innerHTML = guessRemaining;
   }
-
-
-
-
-//   console.log(words[1].length);
-
-//   var dashs = words[1].length;
-
-//   // for (var i = 0; i < dashs; i++) {
-//   //   document.write('_ ');
-//   // }
-
-
-
-// // if the user guess = charat print the user guess
-// // else print _ 
-
-// // for (var j = 0; j  < dashs; j++) {
-// //   //var res = str.charAt(0);
-// //   var check = words[1].charAt(j)
-  
-// //   if (userGuess === check) {
-// //     document.write(userGuess+ ' ');
-// //   }
-// //   else{
-// //     document.write('_ ');
-// //   }
-// // }
 
 
 </script>  

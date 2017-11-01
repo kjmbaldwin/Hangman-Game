@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var letter = [];
+
+var score = 10;
+
+function check(val){
+
+  if(letter.indexOf(val) === -1){
+    letter.push(val);
+    score--;
+  }
+
+
+
+    
+}
+
+document.onkeyup = function(event) {
+  var userGuess = event.key;  
+
+  check(userGuess);
+
+  // letter.push(userGuess);
+
+  // console.log(letter.indexOf(userGuess));
+
+  console.log(letter);
+  console.log(score);
+//   for (var i = 0; i < letter.length; i++) {
+//     if (letter.indexof(userGuess) === -1){
+//       letter.push(userGuess);
+//     }
+//   }
+}
+
+
+
+
+
+
+</script>
+</body>
+</html>
+
