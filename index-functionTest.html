@@ -20,27 +20,35 @@
   var wins = 0;
   var loses = 0;
   var gameWon = 0;
+  
+  //pulling vars to global scale
+  var gameWord;
+  var wordLength;
+  var htmlElements;
+  var guessedLetters;
 
+  function newGame(){
   //Picks a random number and selects that index from the words array
-  var gameWord = words[Math.floor(Math.random() * words.length)];
+  gameWord = words[Math.floor(Math.random() * words.length)];
   //checking the function above in the console
   console.log('Get outta here cheater!! Game word: ' + gameWord);
 
-  //splits the selected gameWord into a new array of characters 
-  var split = [];
-  split = gameWord.split('');
-  var wordLength = split.length;
+
 
   //inserts a blank line for each leter in the split
-  var htmlElements = '';
+  wordLength = gameWord.length;
+  htmlElements = '';
   for (var i = 0; i < wordLength; i++) {
     htmlElements += '<span id="letter' + i + '">_ </span>';
   }
   document.getElementById('wordBlanks').innerHTML = htmlElements;
 
   //array to hold the user's guessed letters
-  var guessedLetters = [];
-
+  guessedLetters = [];
+  document.getElementById('guesses').innerHTML = '';
+  guessRemaining = 10;
+  document.getElementById('remain').innerHTML = guessRemaining;
+}
   //checks if the letter is in the guessed letter array or gameWord array
   //if not add it to the guessed letter and subtract a move from the score
   function check(val){
@@ -55,8 +63,10 @@
     var validate = event.keyCode;
     var userGuess = event.key; 
 
+
     //checks that userGuess is a a-z character
     if ( 65 <= validate && 90 >= validate) {
+    
 
     //compares the player guess against the gameWord array
     for (var j = 0; j  < wordLength; j++) {
@@ -74,10 +84,22 @@
         check(userGuess);
       }
     }
+
     document.getElementById('guesses').innerHTML = guessedLetters;
     document.getElementById('remain').innerHTML = guessRemaining;
   }
+   
   }
+  // if(gameWon === wordLength){
+  //   wins++;
+  //   if (confirm('You won! Play another?') == true){
+  //   gameWon = 0;
+  //   newGame();
+  // }
+  // }
+
+ 
+
 
 
 </script>  
