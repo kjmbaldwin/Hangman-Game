@@ -4,43 +4,66 @@
   <title>Hangman</title>
 </head>
 <body>
+  
+  <h1>Welcome to the Superhero themed Hangman Game!</h1>
+  <h2></h2>
 
-<span id="wordBlanks"></span>
-<section id="gameScore">
-  <p>Guess Letters: <span id="guesses"></span></p>
-  <p>Moves Remaining: <span id="remain">10</span></p>
-
-</section>
+  <span id="word-blanks"></span> 
+  <div>Guess Letters: <span id="guesses"></span></div>
+  <div>Moves Remaining: <span id="remain">10</span></div>
+  <section id="game-score"></section>
+  <div id="retry"></div>
 
 <script type="text/javascript">
   
   //Array for game words
-  var words = ['kyle', 'alice', 'jeremy', 'david', 'chaz', 'tobais'];
+  var words = ['superman', 'batman', 'wonder woman', 'flash', 'iron man', 'hulk', 'thor', 'black widow', 'spiderman', 'captain america'];
   var guessRemaining = 10;
   var wins = 0;
   var loses = 0;
   var gameWon = 0;
+  
+  //pulling newGame vars to global scope
+  var gameWord;
+  var wordLength;
+  var htmlElements;
+  var guessedLetters;
+  var correctLetters;
+  var noSpace;
+  var userGuess;
 
-  //Picks a random number and selects that index from the words array
-  var gameWord = words[Math.floor(Math.random() * words.length)];
-  //checking the function above in the console
-  console.log('Get outta here cheater!! Game word: ' + gameWord);
+  function newGame(){
+    //Picks a random number and selects that index from the words array
+    gameWord = words[Math.floor(Math.random() * words.length)];
+    console.log('Get outta here cheater!! Game word: ' + gameWord);
 
-  //splits the selected gameWord into a new array of characters 
-  var split = [];
-  split = gameWord.split('');
-  var wordLength = split.length;
+      //inserts a blank line for each leter in the split
+      wordLength = gameWord.length;
+      htmlElements = '';
+      for (var i = 0; i < wordLength; i++) {
+          if(gameWord[i] == " "){
+            htmlElements += '<span id="letter' + i + '"> &nbsp </span>';
+          }
+          else{
+            htmlElements += '<span id="letter' + i + '">_ </span>';  
+          }
+          
+      }
+    document.getElementById('word-blanks').innerHTML = htmlElements;
 
-  //inserts a blank line for each leter in the split
-  var htmlElements = '';
-  for (var i = 0; i < wordLength; i++) {
-    htmlElements += '<span id="letter' + i + '">_ </span>';
+    //array to hold the user's guessed letters
+    guessedLetters = [];
+    document.getElementById('guesses').innerHTML = '';
+    
+    guessRemaining = 10;
+    document.getElementById('remain').innerHTML = guessRemaining;
+
+    noSpace = gameWord.replace(/ /g,'');
+    noSpace = noSpace.length;
+    // correctLetters = [noSpace.split('')];
+    // correctLetters = [];
   }
-  document.getElementById('wordBlanks').innerHTML = htmlElements;
-
-  //array to hold the user's guessed letters
-  var guessedLetters = [];
-
+  
   //checks if the letter is in the guessed letter array or gameWord array
   //if not add it to the guessed letter and subtract a move from the score
   function check(val){
@@ -50,36 +73,81 @@
     }
   }
 
+  function win(){
+    wins++;
+    document.getElementById('game-score').innerHTML = 
+      '<h2>Heyooooo, you guessed ' + gameWord.toUpperCase() + ' correctly</h2>' +
+      '<div>Wins: ' + wins + '</div>' +
+      '<div>Losses: ' + loses + '</div>';
+    document.getElementById('retry').innerHTML ='<h1>Play again? Click me!</h1>';
+  }
+
+  function loss(){
+    loses++;
+    document.getElementById('game-score').innerHTML = 
+      '<h2>Bummer, the Superhero was ' + gameWord.toUpperCase() + '</h2>' +
+      '<div>Wins: ' + wins + '</div>' +
+      '<div>Losses: ' + loses + '</div>';
+    document.getElementById('retry').innerHTML ='<h1>Play again? Click me!</h1>';
+  }
+
+  function goAgain(){
+    document.getElementById('game-score').innerHTML = '<h1></h1><div>Wins: ' + wins + '</div>' + '<div>Losses: ' + loses + '</div>';
+    document.getElementById('retry').innerHTML ='';
+    newGame();
+  }
+
+  function checkWon(){
+    for (var k = 0; k < Things.length; k++) {
+      Things[k]
+    }
+  }
+
   //listen for user input
   document.onkeyup = function(event) {
     var validate = event.keyCode;
-    var userGuess = event.key; 
+    userGuess = event.key; 
+
 
     //checks that userGuess is a a-z character
     if ( 65 <= validate && 90 >= validate) {
-
-    //compares the player guess against the gameWord array
-    for (var j = 0; j  < wordLength; j++) {
+    
+      //compares the player guess against the gameWord array
+      for (var j = 0; j  < wordLength; j++) {
   
-      //if there is a match, it replaces the numbered HTML span with the capitalized guessed letter
-      if (userGuess === gameWord[j]){
-        spanInsert = 'letter' + j;
-        var fillLetter = userGuess.toUpperCase();
-        document.getElementById(spanInsert).innerHTML = fillLetter + ' ';
-        gameWon++;
-      }
+        //if there is a match, it replaces the numbered HTML span with the capitalized guessed letter
+        if (userGuess === gameWord[j]){
+          spanInsert = 'letter' + j;
+          var fillLetter = userGuess.toUpperCase();
+          document.getElementById(spanInsert).innerHTML = fillLetter + ' ';
+          gameWon++;
+        }
 
-      //if it does not match gameWord, run the player guess against the check function
-      else{
-        check(userGuess);
+
+        //if it does not match gameWord, run the player guess against the check function
+        else{
+          check(userGuess);
+        }
+      }
+      
+      document.getElementById('guesses').innerHTML = guessedLetters;
+      document.getElementById('remain').innerHTML = guessRemaining;
+
+      if(gameWon >= noSpace){
+          gameWon = 0;
+          win();
+        }
+
+      if(guessRemaining === 0){
+        guessRemaining = 10;
+        loss();
       }
     }
-    document.getElementById('guesses').innerHTML = guessedLetters;
-    document.getElementById('remain').innerHTML = guessRemaining;
-  }
   }
 
-
+  
+  newGame();
+  document.getElementById('retry').onclick = function(){goAgain();}  
 </script>  
 
 </body>
