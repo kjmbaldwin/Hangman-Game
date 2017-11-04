@@ -97,12 +97,6 @@
     newGame();
   }
 
-  function checkWon(){
-    for (var k = 0; k < Things.length; k++) {
-      Things[k]
-    }
-  }
-
   //listen for user input
   document.onkeyup = function(event) {
     var validate = event.keyCode;
@@ -120,9 +114,8 @@
           spanInsert = 'letter' + j;
           var fillLetter = userGuess.toUpperCase();
           document.getElementById(spanInsert).innerHTML = fillLetter + ' ';
-          gameWon++;
+          gameWon++; //this is the offending bug, I went through a bunch of differnt ways to watch for a completed game word, but couldn't get anything to actually work without breaking something else
         }
-
 
         //if it does not match gameWord, run the player guess against the check function
         else{
